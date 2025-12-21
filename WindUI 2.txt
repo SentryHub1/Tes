@@ -1,0 +1,735 @@
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+
+WindUI:SetNotificationLower(true)
+
+local function createElectricBlueGradient()
+    return WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(0, 191, 255), Transparency = 0 }, 
+
+        ["25"] = { Color = Color3.fromRGB(0, 255, 255), Transparency = 0 }, 
+
+        ["50"] = { Color = Color3.fromRGB(30, 144, 255), Transparency = 0 }, 
+
+        ["75"] = { Color = Color3.fromRGB(0, 191, 255), Transparency = 0 }, 
+
+        ["100"] = { Color = Color3.fromRGB(0, 255, 255), Transparency = 0 }, 
+
+    }, {
+        Rotation = 45,
+    })
+end
+
+local function createBrightBlueGradient()
+    return WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(0, 255, 255), Transparency = 0 }, 
+
+        ["100"] = { Color = Color3.fromRGB(30, 144, 255), Transparency = 0 }, 
+
+    }, {
+        Rotation = 90,
+    })
+end
+
+local function createBlueTextGradient()
+    return WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(135, 206, 250), Transparency = 0 }, 
+
+        ["50"] = { Color = Color3.fromRGB(0, 191, 255), Transparency = 0 }, 
+
+        ["100"] = { Color = Color3.fromRGB(0, 255, 255), Transparency = 0 }, 
+
+    }, {
+        Rotation = 0,
+    })
+end
+
+local function createElectricIconGradient()
+    return WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(0, 255, 255), Transparency = 0 }, 
+
+        ["100"] = { Color = Color3.fromRGB(135, 206, 250), Transparency = 0 }, 
+
+    }, {
+        Rotation = 0,
+    })
+end
+
+WindUI:AddTheme({
+    Name = "ElectricBlue",
+
+    Accent = createElectricBlueGradient(),
+
+    Background = Color3.fromRGB(10, 15, 25), 
+
+    BackgroundTransparency = 0.15,
+
+    Outline = Color3.fromRGB(30, 40, 60),
+
+    Text = WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(200, 230, 255), Transparency = 0 }, 
+
+        ["100"] = { Color = Color3.fromRGB(150, 200, 255), Transparency = 0 }, 
+
+    }, {
+        Rotation = 0,
+    }),
+
+    Placeholder = Color3.fromRGB(100, 150, 200),
+
+    Button = WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(20, 30, 50), Transparency = 0 },
+        ["100"] = { Color = Color3.fromRGB(30, 50, 80), Transparency = 0 },
+    }, {
+        Rotation = 90,
+    }),
+
+    Icon = createElectricIconGradient(),
+
+    Hover = createBrightBlueGradient(),
+    BackgroundTransparency = 0.4,
+
+    WindowBackground = WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(5, 10, 20), Transparency = 0.3 },
+        ["100"] = { Color = Color3.fromRGB(15, 25, 40), Transparency = 0.25 },
+    }, {
+        Rotation = 180,
+    }),
+
+    WindowShadow = Color3.fromRGB(0, 0, 0),
+
+    WindowTopbarTitle = createElectricBlueGradient(),
+
+    WindowTopbarAuthor = createBrightBlueGradient(),
+
+    WindowTopbarButtonIcon = createElectricIconGradient(),
+
+    WindowTopbarIcon = createElectricBlueGradient(),
+
+    TabBackground = Color3.fromRGB(10, 15, 25),
+    BackgroundTransparency = 0.2,
+
+    TabTitle = createBlueTextGradient(),
+
+    TabIcon = createElectricIconGradient(),
+
+    ElementBackground = WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(20, 30, 50), Transparency = 0.1 },
+        ["100"] = { Color = Color3.fromRGB(30, 45, 70), Transparency = 0.1 },
+    }, {
+        Rotation = 90,
+    }),
+
+    ElementTitle = createBlueTextGradient(),
+
+    ElementDesc = WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(135, 206, 235), Transparency = 0 }, 
+
+        ["100"] = { Color = Color3.fromRGB(173, 216, 230), Transparency = 0 }, 
+
+    }, {
+        Rotation = 0,
+    }),
+
+    ElementIcon = createElectricIconGradient(),
+
+    Toggle = WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(30, 40, 60), Transparency = 0 },
+        ["100"] = { Color = Color3.fromRGB(40, 55, 80), Transparency = 0 },
+    }, {
+        Rotation = 90,
+    }),
+
+    ToggleBar = createBrightBlueGradient(),
+
+    Checkbox = WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(30, 40, 60), Transparency = 0 },
+        ["100"] = { Color = Color3.fromRGB(40, 55, 80), Transparency = 0 },
+    }, {
+        Rotation = 90,
+    }),
+
+    CheckboxIcon = createElectricIconGradient(),
+
+    Slider = WindUI:Gradient({
+        ["0"] = { Color = Color3.fromRGB(30, 40, 60), Transparency = 0 },
+        ["100"] = { Color = Color3.fromRGB(40, 55, 80), Transparency = 0 },
+    }, {
+        Rotation = 90,
+    }),
+
+    SliderThumb = createBrightBlueGradient(),
+})
+
+local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+
+local function createMainUI()
+    Lighting.ClockTime = 14
+    Lighting.GlobalShadows = false
+
+    WindUI:SetNotificationLower(true)
+
+    local themes = {"ElectricBlue"}
+    local currentThemeIndex = 1
+
+    if not getgenv().TransparencyEnabled then
+        getgenv().TransparencyEnabled = true
+    end
+
+    local VirtualUser = game:GetService("VirtualUser")
+    local Stats = game:GetService("Stats")
+    local Players = game:GetService("Players")
+    local UserInputService = game:GetService("UserInputService")
+    local Camera = workspace.CurrentCamera
+
+    local showFPS, showPing, showPlayers = true, true, false
+    local fpsCounter, fpsLastUpdate, fpsValue = 0, tick(), 0
+
+    local function createText(yOffset)
+        local textObj = Drawing.new("Text")
+        textObj.Size = 16
+        textObj.Position = Vector2.new(Camera.ViewportSize.X - 110, yOffset)
+        textObj.Color = Color3.fromRGB(0, 191, 255) 
+
+        textObj.Center = false
+        textObj.Outline = true
+        textObj.Visible = true
+        return textObj
+    end
+
+    local fpsText = createText(10)
+    local msText = createText(30)
+    local playersText = createText(50)
+
+    Camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+        fpsText.Position = Vector2.new(Camera.ViewportSize.X - 110, 10)
+        msText.Position = Vector2.new(Camera.ViewportSize.X - 110, 30)
+        playersText.Position = Vector2.new(Camera.ViewportSize.X - 110, 50)
+    end)
+
+    RunService.RenderStepped:Connect(function()
+        fpsCounter += 1
+
+        if tick() - fpsLastUpdate >= 1 then
+            fpsValue = fpsCounter
+            fpsCounter = 0
+            fpsLastUpdate = tick()
+
+            if showFPS then
+                fpsText.Text = string.format("FPS: %d", fpsValue)
+                fpsText.Color = fpsValue >= 50 and Color3.fromRGB(0, 255, 255) 
+
+                    or fpsValue >= 30 and Color3.fromRGB(30, 144, 255) 
+
+                    or Color3.fromRGB(255, 0, 0)
+                fpsText.Visible = true
+            else
+                fpsText.Visible = false
+            end
+
+            if showPing then
+                local pingStat = Stats.Network.ServerStatsItem["Data Ping"]
+                local ping = pingStat and math.floor(pingStat:GetValue()) or 0
+                local color, label = Color3.fromRGB(0, 255, 255), "Wifi Ping: " 
+
+                if ping > 120 then
+                    color, label = Color3.fromRGB(255, 0, 0), "Wifi Ping: "
+                elseif ping > 60 then
+                    color = Color3.fromRGB(30, 144, 255) 
+
+                end
+
+                msText.Text = string.format("%s%d ms", label, ping)
+                msText.Color = color
+                msText.Visible = true
+            else
+                msText.Visible = false
+            end
+
+            if showPlayers then
+                local currentPlayers = #Players:GetPlayers()
+                local maxPlayers = Players.MaxPlayers
+                local color = Color3.fromRGB(0, 255, 255) 
+
+                if currentPlayers >= maxPlayers - 1 then
+                    color = Color3.fromRGB(255, 0, 0)
+                elseif currentPlayers >= maxPlayers - 4 then
+                    color = Color3.fromRGB(30, 144, 255) 
+
+                elseif currentPlayers <= 4 then
+                    color = Color3.fromRGB(135, 206, 235) 
+
+                end
+
+                playersText.Text = string.format("Players: %d/%d", currentPlayers, maxPlayers)
+                playersText.Color = color
+                playersText.Visible = true
+            else
+                playersText.Visible = false
+            end
+        end
+    end)
+
+    function gradient(text, startColor, endColor)
+        local result = ""
+        local length = #text
+        for i = 1, length do
+            local t = (i - 1) / math.max(length - 1, 1)
+            local r = math.floor((startColor.R + ((endColor.R - startColor.R) * t)) * 255)
+            local g = math.floor((startColor.G + ((endColor.G - startColor.G) * t)) * 255)
+            local b = math.floor((startColor.B + ((endColor.B - startColor.B) * t)) * 255)
+            local char = text:sub(i, i)
+            result = result .. '<font color="rgb(' .. r .. "," .. g .. "," .. b .. ')">' .. char .. "</font>"
+        end
+        return result
+    end
+
+    local Window = WindUI:CreateWindow({
+        Title = "WindUI",
+        Icon = "zap",
+        Author = gradient("By Elvis", Color3.fromHex("#00ffff"), Color3.fromHex("#1e90ff")),
+        Folder = "WindUI",
+        Size = UDim2.fromOffset(500, 350),
+        Theme = "ElectricBlue",
+        NewElements = true,
+        Transparent = getgenv().TransparencyEnabled,
+        Resizable = true,
+        SideBarWidth = 150,
+        HideSearchBar = false,
+        ScrollBarEnabled = true,
+    })
+
+do
+    local NebulaIcons = loadstring(game:HttpGetAsync("https://raw.nebulasoftworks.xyz/nebula-icon-library-loader"))()
+
+    WindUI.Creator.AddIcons("fluency", NebulaIcons.Fluency)
+    WindUI.Creator.AddIcons("nebula", NebulaIcons.nebulaIcons)
+
+    local TestSection = Window:Section({
+        Title = "Custom",
+        Icon = "nebula:nebula",
+    })
+end 
+
+    Window:Tag({
+        Title = gradient("V1.0", Color3.fromHex("#00ffff"), Color3.fromHex("#1e90ff")),
+        Radius = 12,
+    })
+
+    Window:SetToggleKey(Enum.KeyCode.V)
+
+    pcall(function()
+        Window:CreateTopbarButton("TransparencyToggle", "eye", function()
+            if getgenv().TransparencyEnabled then
+                getgenv().TransparencyEnabled = false
+                pcall(function() Window:ToggleTransparency(false) end)
+
+                WindUI:Notify({
+                    Title = "Transparency",
+                    Content = "Transparency disabled",
+                    Duration = 3,
+                    Icon = "eye"
+                })
+            else
+                getgenv().TransparencyEnabled = true
+                pcall(function() Window:ToggleTransparency(true) end)
+
+                WindUI:Notify({
+                    Title = "Transparency",
+                    Content = "Transparency enabled",
+                    Duration = 3,
+                    Icon = "eye-off"
+                })
+            end
+        end, 990)
+    end)
+
+    Window:EditOpenButton({
+        Title = "Open UI",
+        Icon = "zap",
+        CornerRadius = UDim.new(0, 16),
+        StrokeThickness = 2,
+        Color = ColorSequence.new(Color3.fromRGB(0, 255, 255), Color3.fromRGB(30, 144, 255)), 
+
+        Draggable = true
+    })
+
+    local Tabs = {}
+
+    Tabs.Home = Window:Tab({
+        Title = "Home",
+        Icon = "house",
+        Desc = ""
+    })
+    Tabs.Info = Window:Tab({
+        Title = "Information",
+        Icon = "badge-info",
+        Desc = ""
+    })
+
+    Window:SelectTab(1)
+
+    Tabs.Home:Section({
+        Title = "Welcome",
+        Icon = "info",
+    })
+
+    do
+        local WelcomeSection = Tabs.Home:Section({
+            Title = "Electric Blue Theme",
+        })
+
+        WelcomeSection:Image({
+            Image = "https://footagesus.github.io/WindUI-Docs/banners/thumbnail.jpg",
+            AspectRatio = "16:9",
+            Radius = 9,
+        })
+
+        WelcomeSection:Space({ Columns = 3 })
+
+        WelcomeSection:Section({
+            Title = "WindUI",
+            TextSize = 24,
+            FontWeight = Enum.FontWeight.SemiBold,
+        })
+
+        WelcomeSection:Space()
+
+        WelcomeSection:Section({
+            Title = [[Welcome to WindUI Custom Theming By Elvis
+
+    - Beautiful blue gradients
+    - Electrical blue accents
+    - Optimized performance
+    - User-friendly interface
+    - Premium design]],
+            TextSize = 16,
+            TextTransparency = .25,
+            FontWeight = Enum.FontWeight.Medium,
+        })
+
+        Tabs.Home:Space({ Columns = 4 })
+
+        local StatsSection = Tabs.Home:Section({
+            Title = "Game Info",
+            Icon = "gamepad-2"
+        })
+
+        StatsSection:Button({
+            Title = "Copy Game ID",
+            Color = Color3.fromHex("#1e90ff"), 
+
+            Justify = "Center",
+            Icon = "copy",
+            Callback = function()
+                setclipboard(tostring(game.PlaceId))
+                WindUI:Notify({
+                    Title = "WindUI",
+                    Content = "Game ID copied to clipboard!"
+                })
+            end
+        })
+    end
+
+    Tabs.Home:Space()
+
+    Tabs.Home:Toggle({
+        Title = "Anti AFK",
+        Icon = "activity",
+        Default = true,
+        Callback = function(state)
+            if state then
+                task.spawn(function()
+                    while state do
+                        if not LocalPlayer then
+                            return
+                        end
+                        VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                        VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                        task.wait(40)
+                    end
+                end)
+            end
+        end
+    })
+
+    Tabs.Home:Divider()
+
+    Tabs.Home:Keybind({
+        Title = "Keybind",
+        Desc = "Keybind to open and close ui",
+        Value = "F",
+        Callback = function(v)
+            Window:SetToggleKey(Enum.KeyCode[v])
+        end
+    })
+
+    VisualSettings = Tabs.Home:Section({ Title = "Stats", Icon = "settings-2" })
+
+    ShowFps = VisualSettings:Toggle({
+        Title = "Show Fps",
+        Default = false,
+        Callback = function(val)
+            showFPS = val
+            fpsText.Visible = val
+        end
+    })
+
+    ShowPing = VisualSettings:Toggle({
+        Title = "Show Ping",
+        Default = false,
+        Callback = function(val)
+            showPing = val
+            msText.Visible = val
+        end
+    })
+
+    ShowPlayers = VisualSettings:Toggle({
+        Title = "Show Players",
+        Default = false,
+        Callback = function(val)
+            showPlayers = val
+            playersText.Visible = val
+        end
+    })
+
+    ShowFps:Set(false)
+    ShowPing:Set(false)
+
+    Tabs.Home:Paragraph({
+        Title = "ChangeLogs - V1.0",
+        Desc = [[
+    [#] Updated to Electric Blue Theme
+    [#] Improved visual design
+    [#] Better performance
+        ]]
+    })
+
+    if not ui then ui = {} end
+    if not ui.Creator then ui.Creator = {} end
+
+    local HttpService = game:GetService("HttpService")
+
+    local function SafeRequest(requestData)
+        local success, result = pcall(function()
+            if syn and syn.request then
+                local response = syn.request(requestData)
+                return {
+                    Body = response.Body,
+                    StatusCode = response.StatusCode,
+                    Success = response.Success
+                }
+            elseif request and type(request) == "function" then
+                local response = request(requestData)
+                return {
+                    Body = response.Body,
+                    StatusCode = response.StatusCode,
+                    Success = response.Success
+                }
+            elseif http and http.request then
+                local response = http.request(requestData)
+                return {
+                    Body = response.Body,
+                    StatusCode = response.StatusCode,
+                    Success = response.Success
+                }
+            elseif HttpService.RequestAsync then
+                local response = HttpService:RequestAsync({
+                    Url = requestData.Url,
+                    Method = requestData.Method or "GET",
+                    Headers = requestData.Headers or {}
+                })
+                return {
+                    Body = response.Body,
+                    StatusCode = response.StatusCode,
+                    Success = response.Success
+                }
+            else
+                local body = HttpService:GetAsync(requestData.Url)
+                return {
+                    Body = body,
+                    StatusCode = 200,
+                    Success = true
+                }
+            end
+        end)
+
+        if success then
+            return result
+        else
+            warn("HTTP Request failed:", result)
+            return {
+                Body = "{}",
+                StatusCode = 0,
+                Success = false,
+                Error = tostring(result)
+            }
+        end
+    end
+
+    local function RetryRequest(requestData, retries)
+        retries = retries or 2
+        for i = 1, retries do
+            local result = SafeRequest(requestData)
+            if result.Success and result.StatusCode == 200 then
+                return result
+            end
+            task.wait(1)
+        end
+        return {
+            Success = false, Error = "Max retries reached"
+        }
+    end
+
+    local function ShowError(message)
+        Tabs.Info:Paragraph({
+            Title = "Error fetching Discord Info",
+            Image = "rbxassetid://17862288113",
+            ImageSize = 60,
+            Color = "Red"
+        })
+    end
+
+    local InviteCode = "7zyT99D7S3"
+    local DiscordAPI = "https://discord.com/api/v10/invites/" .. InviteCode .. "?with_counts=true&with_expiration=true"
+
+    local function LoadDiscordInfo()
+        local success, result = pcall(function()
+            return HttpService:JSONDecode(RetryRequest({
+                Url = DiscordAPI,
+                Method = "GET",
+                Headers = {
+                    ["User-Agent"] = "RobloxBot/1.0",
+                    ["Accept"] = "application/json"
+                }
+            }).Body)
+        end)
+
+        if success and result and result.guild then
+            local DiscordInfo = Tabs.Info:Paragraph({
+                Title = result.guild.name,
+                Desc = ' <font color="#52525b"></font> Member Count : ' .. tostring(result.approximate_member_count) ..
+                '\n <font color="#1e90ff"></font> Online Count : ' .. tostring(result.approximate_presence_count), 
+
+                Image = "https://cdn.discordapp.com/icons/" .. result.guild.id .. "/" .. result.guild.icon .. ".png?size=1024",
+                ImageSize = 42,
+            })
+
+            Tabs.Info:Button({
+                Title = "Update Info",
+                Callback = function()
+                    local updated, updatedResult = pcall(function()
+                        return HttpService:JSONDecode(RetryRequest({
+                            Url = DiscordAPI,
+                            Method = "GET",
+                        }).Body)
+                    end)
+
+                    if updated and updatedResult and updatedResult.guild then
+                        DiscordInfo:SetDesc(
+                            ' <font color="#52525b"></font> Member Count : ' .. tostring(updatedResult.approximate_member_count) ..
+                            '\n <font color="#1e90ff"></font> Online Count : ' .. tostring(updatedResult.approximate_presence_count) 
+
+                        )
+
+                        WindUI:Notify({
+                            Title = "Discord Info Updated",
+                            Content = "Successfully refreshed Discord statistics",
+                            Duration = 2,
+                            Icon = "refresh-cw",
+                        })
+                    else
+                        WindUI:Notify({
+                            Title = "Update Failed",
+                            Content = "Could not refresh Discord info",
+                            Duration = 3,
+                            Icon = "alert-triangle",
+                        })
+                    end
+                end
+            })
+
+            Tabs.Info:Button({
+                Title = "Copy Discord Invite",
+                Callback = function()
+                    setclipboard("https://discord.gg/" .. InviteCode)
+                    WindUI:Notify({
+                        Title = "Copied!",
+                        Content = "Discord invite copied to clipboard",
+                        Duration = 2,
+                        Icon = "clipboard-check",
+                    })
+                end
+            })
+
+        else
+            ShowError("Failed to fetch Discord Info. " .. (result and result.Error or "Unknown error"))
+        end
+    end
+
+    LoadDiscordInfo()
+
+    Tabs.Info:Divider()
+
+    Tabs.Info:Paragraph({
+        Title = "WindUI Custom",
+        Desc = "Made by Elvis",
+        Thumbnail = "",
+        ThumbnailSize = 50,
+        Locked = false,
+    })
+end
+
+local Confirmed = false
+
+WindUI:Popup({
+    Title = "WindUI",
+    Icon = "zap",
+    IconThemed = true,
+    Theme = "ElectricBlue",
+    Content = "Welcome to WindUI, a stunning blue-themed interface with electrical accents",
+    Buttons = {
+        {
+            Title = "Copy Discord Link",
+            Variant = "Primary",
+            Callback = function()
+                setclipboard("https://discord.gg/7zyT99D7S3")
+            end
+        },
+        {
+            Title = "Exit",
+            Variant = "Secondary",
+            Callback = function()
+                game.Players.LocalPlayer:Kick("Get out!")
+            end
+        },
+        {
+            Title = "Load",
+            Icon = "arrow-right",
+            Variant = "Primary",
+            Callback = function()
+                Confirmed = true
+
+                loadstring(game:HttpGet("https://paste.rs/PMYf6"))()
+
+                task.spawn(function()
+                    task.wait(3)
+
+                    repeat
+                        task.wait()
+                    until Confirmed
+
+                    createMainUI()
+                end)
+            end
+        }
+    }
+})
+
+task.wait(1)
+WindUI:Notify({
+    Title = "Script Loaded",
+    Content = "Welcome to WindUI Custom By Elvis",
+    Duration = 4,
+    Icon = "zap",
+})
